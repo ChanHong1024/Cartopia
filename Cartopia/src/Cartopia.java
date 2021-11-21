@@ -1,6 +1,6 @@
 import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -154,7 +154,7 @@ public class Cartopia {
 								Date startDate = null;
 						        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
-						        String cinput = s.nextLine();
+						        String cinput = s.next();
 						        if(null != cinput && cinput.trim().length() > 0){
 						        	try {
 										startDate = (Date) format.parse(cinput);
