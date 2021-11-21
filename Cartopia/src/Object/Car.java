@@ -15,7 +15,9 @@ public class Car {
 		this.account = ac;
 		this.carType = carType;
 		this.carName = carName;
+		this.carState = CarStateAvaliable.getInstance();
 		this.pricePerDay = pricePerDay;
+		
 		carList.add(this);
 	}
 
@@ -91,11 +93,11 @@ public class Car {
 			System.out.println(itr.getCarType().getCarType());
 			System.out.println(carType.getCarType());
 
-			if( (owner == null || itr.getAccount() == owner) && 
+			if((owner == null || itr.getAccount() == owner) && 
 				(carName == null || itr.getCarName().indexOf(carName) != -1)  &&
 				(carType == null || itr.getCarType() == carType) &&
-				(carState == null || itr.getCarState() == carState)  &&
-				(itr.getPricePerDay() <= priceLowerBound) &&
+				//(carState == null || itr.getCarState() == carState)
+				(itr.getPricePerDay() <=  priceUpperBound) &&
 				(itr.getPricePerDay() >= priceLowerBound) 
 			){
 				resultList.add(itr);

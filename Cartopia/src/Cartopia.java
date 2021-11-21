@@ -31,6 +31,7 @@ public class Cartopia {
 		
 		logout : while(true){
 			System.out.println("Login - l <username> <password>");
+			System.out.println("Exit Cartopia - x");
 			cmd = (char)s.next().charAt(0);
 			if(cmd == 'l') {
 				
@@ -124,7 +125,7 @@ public class Cartopia {
 							}
 
 
-							Vector<Car> result = Car.SearchCar(null, carName, ct, cs, lowerBound, upperBound);
+							Vector<Car> result = Car.SearchCar(null, carName, ct, cs, upperBound , lowerBound);
 
 							for(int i = 0; i < result.size();i++){
 								System.out.println("=================================");
@@ -153,7 +154,10 @@ public class Cartopia {
 					}
 				}else {
 						System.out.println("Wrong username or password! please try again.");
-				}				
+				}
+			}else if(cmd == 'x') {
+				System.out.println("Goodbye! ");
+				System.exit(0);
 			}else {
 				System.out.println("wrong cmd.");
 			}
