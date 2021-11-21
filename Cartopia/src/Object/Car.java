@@ -15,7 +15,7 @@ public class Car {
 		this.account = ac;
 		this.carType = carType;
 		this.carName = carName;
-		this.carState = CarStateAvaliable.getInstance();
+		this.carState = CarStateAvailable.getInstance();
 		this.pricePerDay = pricePerDay;
 		
 		carList.add(this);
@@ -90,13 +90,10 @@ public class Car {
 	public static Vector<Car> SearchCar(Account owner, String carName, CarType carType, CarState carState, double priceUpperBound, double priceLowerBound){
 		Vector<Car> resultList = new Vector<>();
 		for(Car itr : carList){	
-			System.out.println(itr.getCarType().getCarType());
-			System.out.println(carType.getCarType());
-
 			if((owner == null || itr.getAccount() == owner) && 
 				(carName == null || itr.getCarName().indexOf(carName) != -1)  &&
 				(carType == null || itr.getCarType() == carType) &&
-				//(carState == null || itr.getCarState() == carState)
+				(carState == null || itr.getCarState() == carState) &&
 				(itr.getPricePerDay() <=  priceUpperBound) &&
 				(itr.getPricePerDay() >= priceLowerBound) 
 			){
@@ -106,6 +103,9 @@ public class Car {
 		return resultList;
 	}
 
+
+	
+	/*
 	public static Vector<Car> getAvaibleCarList(){
 		Vector<Car> resultList = new Vector<>();
 		for(Car itr : carList){
@@ -115,6 +115,7 @@ public class Car {
 		}
 		return resultList;
 	}
+	*/
 
 
 

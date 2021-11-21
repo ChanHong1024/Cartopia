@@ -16,6 +16,14 @@ public class Account {
 		}
 		return false;
 	}
+	
+	public static Account  getAccountByUsername(String username) {
+		for (Account itr : accountList){
+			if (itr.getUsername().equals(username))
+				return itr;
+		}	
+		return null;
+	}
 
 	public Account(String username, String password, String email) {
 		this.username = username;

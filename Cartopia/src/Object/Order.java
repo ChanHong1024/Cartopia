@@ -1,11 +1,12 @@
 package Object;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
 public class Order {
 
-	public static Vector<Order> orders  = new Vector<>();
+	public static Vector<Order> ordersList  = new Vector<>();
 	private Account renter;
 	private Account lender;
 	private OrderState state;
@@ -75,7 +76,7 @@ public class Order {
 		this.coupon = coupon;
 		this.date = date;
 		this.days = days;
-		Order.orders.add(this);
+		Order.ordersList.add(this);
 		state = OrderStatePendingForApprove.getInstance(); 
 	}
 
@@ -85,7 +86,7 @@ public class Order {
 		this.car = car;
 		this.date = date;
 		this.days = days;
-		Order.orders.add(this);
+		Order.ordersList.add(this);
 	}
 
 
@@ -129,9 +130,11 @@ public class Order {
 	}
 
 	/////////
+	
 
 	public static int comfirmOrder(Order o, Account renter){
 		if(o.getRenter() == renter){
+			o.getCar().setCarState(CarStateUnavailable.getInstance());
 			o.setState(OrderStateOrderConfirmed.getInstance());
 			return 0;
 		}else{
@@ -142,6 +145,7 @@ public class Order {
 
 	public static int finishOrder(Order o, Account lender, Rating rating){
 		if(o.getLender() == lender){
+			o.getCar().setCarState(CarStateAvailable.getInstance());
 			o.setState(OrderStateOrderComplete.getInstance());
 			o.setRating(rating);
 			return 0;
@@ -149,6 +153,26 @@ public class Order {
 			//wrong renter value
 			return -1;
 		}
+	}
+	
+	public static boolean isOrderDateVaild(Car c, Date d, int days) {
+		Date startDate = d;
+		Calendar cal = Calendar.getInstance(); 
+		cal.setTime(startDate); 
+		cal.add(Calendar.DATE, days);
+		Date endDate = cal.getTime();
+		for(Order itr : ordersList) {
+			if(itr.getCar() == c) {
+				Date startDate_itr = d;
+				cal.setTime(startDate_itr); 
+				cal.add(Calendar.DATE, itr.getDays());
+				Date endDate_itr = cal.getTime();
+				if(startDate.after(startDate_itr) && startDate.before(endDate_itr) || endDate.after(startDate_itr) && endDate.before(endDate_itr)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 

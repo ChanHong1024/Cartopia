@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.util.Scanner;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import Object.*;
 
@@ -30,8 +33,8 @@ public class Cartopia {
 		
 		
 		logout : while(true){
-			System.out.println("Login - l <username> <password>");
-			System.out.println("Exit Cartopia - x");
+			System.out.println("l - Login | format: l <username> <password>");
+			System.out.println("x - Exit Cartopia");
 			cmd = (char)s.next().charAt(0);
 			if(cmd == 'l') {
 				
@@ -48,7 +51,7 @@ public class Cartopia {
 					Long datetime = System.currentTimeMillis();
 					Timestamp timestamp = new Timestamp(datetime);
 					System.out.println("Welcome, " + username + "! Time now is : " + timestamp + ".");
-					while(true){
+					menu: while(true){
 						
 						System.out.println("s - Serach Car");
 						System.out.println("o - Order Management");
@@ -111,7 +114,7 @@ public class Cartopia {
 							if(cmd == 'y'){
 								cs = null;
 							}else{
-								cs = CarStateAvaliable.getInstance();
+								cs = CarStateAvailable.getInstance();
 							}
 
 							System.out.println("Do you want to search cars within a specific price range? (No = n, Yes = y <lowerbound> <upperbound> eg. y 0 1000)");
@@ -129,13 +132,53 @@ public class Cartopia {
 
 							for(int i = 0; i < result.size();i++){
 								System.out.println("=================================");
-								System.out.println("Command index: " + i);
+								System.out.println("Car search index: " + i);
 								System.out.println("Car owner: " + result.get(i).getAccount().getUsername());
 								System.out.println("Car name: " + result.get(i).getCarName());
 								System.out.println("Car type: " + result.get(i).getCarType().getCarType());
 								System.out.println("Car price (per day): " + result.get(i).getPricePerDay());
 								System.out.println("=================================");
 							}
+							
+							System.out.println("Further action:");
+							System.out.println("o - make order");
+							System.out.println("x - go back to main menu.");
+							cmd = s.next().charAt(0);
+							switch(cmd) {
+							case 'o':
+								System.out.println("please enter car search index of the car you want to rent.");
+								int carSerachIndex = s.nextInt();
+								
+								Account lender = result.get(carSerachIndex).getAccount();
+								Account renter = Account.getAccountByUsername(username);
+								Date startDate = null;
+						        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+						        String cinput = s.nextLine();
+						        if(null != cinput && cinput.trim().length() > 0){
+						        	try {
+										startDate = (Date) format.parse(cinput);
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+						        }
+								
+								System.out.println("please enter days you want to rent.");
+								int days = s.nextInt();								
+								
+								if(Order.isOrderDateVaild(result.get(carSerachIndex), startDate, days)) {
+									new Order(renter, lender, days , startDate,  result.get(carSerachIndex));
+									System.out.println("Pending the lender to accept the order.");
+								} else {
+									System.out.println("This car was reserved for another customer during this order date, try again with other order date.");
+								}
+								break;
+							case 'x':
+								break;
+							default:
+								System.out.println("wrong cmd.");
+							}							
 
 							break;
 						case 'o':
