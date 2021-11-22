@@ -63,6 +63,14 @@ public class Order {
 	public void setDays(int days) {
 		this.days = days;
 	}
+
+	public Double getOrderPrice() {
+		if(coupon != null)
+			return this.car.getPricePerDay() * days * (1 - coupon.getDiscountPercentage());
+		else
+			return this.car.getPricePerDay() * days;
+	}
+
 	private Rating rating;
 	private Coupon coupon;
 	private Car car;
@@ -76,8 +84,9 @@ public class Order {
 		this.coupon = coupon;
 		this.date = date;
 		this.days = days;
+		this.state = OrderStatePendingForApprove.getInstance(); 
 		Order.ordersList.add(this);
-		state = OrderStatePendingForApprove.getInstance(); 
+		
 	}
 
 	public Order(Account renter, Account lender, int days, Date date, Car car) {
@@ -86,6 +95,7 @@ public class Order {
 		this.car = car;
 		this.date = date;
 		this.days = days;
+		this.state = OrderStatePendingForApprove.getInstance(); 
 		Order.ordersList.add(this);
 	}
 
@@ -117,20 +127,31 @@ public class Order {
 
 	@Override
 	public String toString() {
+		String coupon_str = (coupon != null ) ? coupon.toString() : "//";
+		String rating_str = (rating != null ) ? rating.getComment() : "//";
 		return 
 		"Order Infomation\n----------------------------------\n"+
 		"state: " + state.getState() + "\n" +
 		"renter: " + renter.getUsername() + "\n" +
 		"lender: " + lender.getUsername() + "\n" +
-		"rating: " + rating.getComment() + "\n" +
-		"coupon: " + coupon.toString() + "\n" +
-		"car: " + car.toString() + "\n" +
+		"rating: " + rating_str + "\n" +
+		"coupon: " + coupon_str + "\n" +
+		"car: " + car.getCarName() + "\n" +
 		"date: " + getStartDate().toString() + " - " + getEndDate().toString() + "\n" +
-		"total days: " + getDays() + "\n";
+		"total days: " + getDays() + "\n" +
+		"total price: " + getPrice();
 	}
 
 	/////////
 	
+	public static Vector<Order> getOrderByRenter(String username){
+		Vector<Order> result = new Vector<>();
+		for(Order itr: ordersList){
+			if(itr.getRenter().getUsername().equals(username))
+				result.add(itr);
+		}
+		return result;
+	}
 
 	public static int comfirmOrder(Order o, Account renter){
 		if(o.getRenter() == renter){

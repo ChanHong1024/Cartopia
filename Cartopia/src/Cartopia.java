@@ -182,13 +182,21 @@ public class Cartopia {
 
 							break;
 						case 'o':
+							Vector<Order> o = Order.getOrderByRenter(username);
+							for(Order itr: o){
+								System.out.println(itr.toString());
+							}
+							System.out.println("f - Finish Order");
+							System.out.println("c - Cancel Order");
 							break;
 						case 'c':
+							System.out.println("v - View Car");
+							System.out.println("c - Comfirm Order");	
 							break;
 						case 'l':
 							continue logout;
 						case 'x':
-							System.out.println("Goodbye! " + username);
+							System.out.println("Goodbyel ! " + username);
 							System.exit(0);
 							break;
 						default:
