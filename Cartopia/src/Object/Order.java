@@ -139,7 +139,7 @@ public class Order {
 		"car: " + car.getCarName() + "\n" +
 		"date: " + getStartDate().toString() + " - " + getEndDate().toString() + "\n" +
 		"total days: " + getDays() + "\n" +
-		"total price: " + getPrice();
+		"total price: " + getPrice()+ "\n=================================\n";
 	}
 
 	/////////
@@ -152,6 +152,16 @@ public class Order {
 		}
 		return result;
 	}
+
+	public static Vector<Order> getOrderByLender(String username){
+		Vector<Order> result = new Vector<>();
+		for(Order itr: ordersList){
+			if(itr.getLender().getUsername().equals(username))
+				result.add(itr);
+		}
+		return result;
+	}
+
 
 	public static int comfirmOrder(Order o, Account renter){
 		if(o.getRenter() == renter){

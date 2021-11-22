@@ -186,12 +186,33 @@ public class Cartopia {
 							for(Order itr: o){
 								System.out.println(itr.toString());
 							}
+							System.out.println("o - Comfirm Order");
 							System.out.println("f - Finish Order");
 							System.out.println("c - Cancel Order");
+							//TO-DO: implements o, f c
 							break;
 						case 'c':
-							System.out.println("v - View Car");
-							System.out.println("c - Comfirm Order");	
+							System.out.println("Your Car\n===============================\n");
+							Account a = Account.getAccountByUsername(username);
+							Vector<Car> c = Car.getCarByAccount(a);
+							for(int i = 0; i < c.size(); i++){
+								System.out.println("Car index - " + i);
+								System.out.println(c.get(i).toString());
+							}
+							System.out.println("d - Discard car | format d <car index>");	
+							cmd = s.next().charAt(0);
+							switch(cmd){
+								case 'd' : 
+								int carIndex = s.nextInt();
+								Car car = c.get(carIndex);
+								Car.removeCar(car);
+								System.out.println("Car removed!");
+								break;
+								default : System.out.println("wrong cmd.");
+							}
+							for(int i = 0; i < c.size(); i++){
+								
+							}
 							break;
 						case 'l':
 							continue logout;

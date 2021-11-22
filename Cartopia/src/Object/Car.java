@@ -31,6 +31,16 @@ public class Car {
 		return false;
 	}
 
+	public static boolean removeCar(Car car){
+		for(Car itr : carList){
+			if(itr == car){
+				carList.remove(car);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void setCarName(String carName) {
 		this.carName = carName;
 	}
@@ -77,14 +87,23 @@ public class Car {
 
 	@Override
 	public String toString() {
-		return "Car information:\n" +
-			" carName: " + getCarName() + "\n" +
-			", pricePerDay: " + getPricePerDay() + "\n" +
-			", carType: " + getCarType() + "\n" +
-			", carState: " + getCarState() + "\n" +
-			", account: " + getAccount() + "\n";
+		return "Car name: " + getCarName() + "\n" +
+			"Price Per Day: " + getPricePerDay() + "\n" +
+			"Car type: " + getCarType().getCarType() + "\n" +
+			"Car state: " + getCarState().getState() + "\n" +
+			"owner: " + getAccount().getUsername() + "\n";
 	}
-	
+
+	public static Vector<Car> getCarByAccount(Account a){
+		Vector<Car> resultList = new Vector<>();
+		for(Car itr : carList){	
+			if(itr.getAccount() == a){
+				resultList.add(itr);
+			}
+		}
+		return resultList;
+	}
+
 
 	// pass null if not filtering that properties
 	public static Vector<Car> SearchCar(Account owner, String carName, CarType carType, CarState carState, double priceUpperBound, double priceLowerBound){
