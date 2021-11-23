@@ -62,7 +62,7 @@ public class Cartopia {
 					Timestamp timestamp = new Timestamp(datetime);
 					System.out.println("Welcome, " + username + "! Time now is : " + timestamp + ".");
 					menu: while (true) {
-
+						System.out.println("Main Menu *\\(^_^)/*\n=================================\n");
 						System.out.println("s - Serach Car");
 						System.out.println("o - Order Management");
 						System.out.println("c - Car Management");
@@ -329,54 +329,101 @@ public class Cartopia {
 								System.out.println("Car index - " + i);
 								System.out.println(c.get(i).toString());
 							}
-							System.out.println("d - Discard car | format d <car index>");
+							
+							if(c.isEmpty()){
+								System.out.println("404 not found - Why not try to lent a car?\n\n");
+							}
+
+							System.out.println("l - Lent a car");
+							System.out.println("d - Discard a car | format d <car index>");
+							System.out.println("x - go back to main menu.");
 							cmd = s.next().charAt(0);
 							switch (cmd) {
+							case 'l':
+								Account buildOwner = Account.getAccountByUsername(username);
+								System.out.println("What is your car type?");
+								System.out.println("0 - Private Car");
+								System.out.println("1 - Light Goods Vechicle");
+								System.out.println("2 - Motorcycle");
+								System.out.println("3 - Supercar");
+								CarType buildCarType;
+								while(true){
+									temp = s.nextInt();
+									switch (temp) {
+									case 0:
+										buildCarType = CarTypePrivateCar.getInstance();
+										break;
+									case 1:
+										buildCarType = CarTypeLightGoodsVehicle.getInstance();
+										break;
+									case 2:
+										buildCarType = CarTypeMotorCycle.getInstance();	
+										break;
+									case 3:
+										buildCarType = CarTypeSupercar.getInstance();
+										break;
+									default:
+										System.out.println("wrong car type, please try again!");
+										continue;
+									}
+									break;
+								}
+
+								System.out.println("What is your car name?");
+								s.nextLine();
+								String buildCarName = s.nextLine();
+								System.out.println("What the price of the car per day you want?");
+								double pricePerDay = s.nextDouble();
+								new Car(buildOwner, buildCarType, buildCarName, pricePerDay);
+								break;
 							case 'd':
 								int carIndex = s.nextInt();
 								Car car = c.get(carIndex);
 								Car.removeCar(car);
 								System.out.println("Car removed!");
 								break;
-							default:
-								System.out.println("wrong cmd.");
-							}
-							for (int i = 0; i < c.size(); i++) {
-
-							}
-							break;
-						case 'a':
-
-							Account ac = Account.getAccountByUsername(username);
-							System.out.println(ac);
-
-							System.out.println("v - view Account Remaining");
-							System.out.println("d - deposit | d <amount>");
-							System.out.println("w - withdrawal | d <amount>");
-							System.out.println("x - go back to main menu.");
-							switch (cmd) {
-							case 'v':
-								System.out.println("Total Amount" + ((CustomerAccount) ac).getCoin());
-								break;
-							case 'd':
-								int depositAmount = s.nextInt();
-								((CustomerAccount) ac).deposit(depositAmount);
-								System.out.println("Total Amount" + ((CustomerAccount) ac).getCoin());
-								break;
-							case 'w':
-								int withdrawalAmount = s.nextInt();
-								if (((CustomerAccount) ac).getCoin() - withdrawalAmount >= 0) {
-									((CustomerAccount) ac).withdrawal(withdrawalAmount);
-									System.out.println("Total Amount" + ((CustomerAccount) ac).getCoin());
-								} else {
-									System.out.println("not enough money to withdrawal");
-								}
-								break;
 							case 'x':
 								continue menu;
 							default:
 								System.out.println("wrong cmd.");
 							}
+							break;
+						case 'a':
+							Account ac = Account.getAccountByUsername(username);
+							System.out.println(ac);
+							account: while(true){
+								System.out.println("Account Menu\n=================================\n");
+								System.out.println("v - view Account Remaining");
+								System.out.println("d - deposit | d <amount>");
+								System.out.println("w - withdrawal | d <amount>");
+								System.out.println("x - go back to main menu.");
+								cmd = s.next().charAt(0);
+								switch (cmd) {
+								case 'v':
+									System.out.println("Total Amount: " + ((CustomerAccount) ac).getCoin());
+									continue account;
+								case 'd':
+									Double depositAmount = s.nextDouble();
+									((CustomerAccount) ac).deposit(depositAmount);
+									System.out.println("Total Amount: " + ((CustomerAccount) ac).getCoin());
+									continue account;
+								case 'w':
+									Double withdrawalAmount = s.nextDouble();
+									if (((CustomerAccount) ac).getCoin() - withdrawalAmount >= 0) {
+										((CustomerAccount) ac).withdrawal(withdrawalAmount);
+										System.out.println("Total Amount: " + ((CustomerAccount) ac).getCoin());
+									} else {
+										System.out.println("Not enough money to withdrawal.(。_。)...");
+									}
+									continue account;
+								case 'x':
+									continue menu;
+								default:
+									System.out.println("wrong cmd.");
+								}
+								break;
+							}
+							break;
 						case 'l':
 							continue logout;
 						case 'x':
