@@ -6,8 +6,8 @@ public class CodeCoupon extends Coupon {
 
 	private String code;
 
-	public CodeCoupon(String status, String name, double discountRate, String code, Date expireDate) {
-		super(status, name, discountRate, expireDate);
+	public CodeCoupon( String name, double discountRate, String code, Date expireDate) {
+		super(name, discountRate, expireDate);
 		this.code = code;
 	}
 
@@ -15,4 +15,8 @@ public class CodeCoupon extends Coupon {
 		return code;
 	}
 
+	@Override
+	public String toString(){
+		return super.toString() + "\n Type : Code Coupon" + "\n Code : " + code;
+	}
 }

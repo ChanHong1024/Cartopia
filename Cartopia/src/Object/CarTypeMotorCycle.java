@@ -2,7 +2,7 @@ package Object;
 
 public class CarTypeMotorCycle implements CarType {
 
-	private double rate;
+	private double rate = 1;
 	
 	private static CarTypeMotorCycle instance = new CarTypeMotorCycle();
 

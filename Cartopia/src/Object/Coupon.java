@@ -6,26 +6,15 @@ import java.util.Date;
 public abstract class Coupon {
 
 	public static Vector<Coupon> couponList;
-	private String status;
 	private String name;
 	private double discountPercentage;
 	private Date expireDate;
 
 
-	public Coupon(String status, String name, double discountPercentage, Date expireDate) {
-		this.status = status;
+	public Coupon( String name, double discountPercentage, Date expireDate) {
 		this.name = name;
 		this.discountPercentage = discountPercentage;
 		this.expireDate = expireDate;
-	}
-
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public String getName() {
@@ -57,6 +46,10 @@ public abstract class Coupon {
 	
 	public void getDiscountPercentage(double rate){
 		this.discountPercentage = rate;
+	}
+
+	public String toString(){
+		return "Coupon Name : " + name + "\n Discount Percentage : " + discountPercentage + "\n Expire Date : " + expireDate;
 	}
 
 }

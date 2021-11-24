@@ -13,6 +13,10 @@ public class Order {
 	private Rating rating;
 	private Coupon coupon;
 	private Car car;
+<<<<<<< HEAD
+	private double platformChargeRate;
+=======
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 	private Date date;
 	private int days;
 	private int orderID;
@@ -24,6 +28,10 @@ public class Order {
 		this.coupon = coupon;
 		this.date = date;
 		this.days = days;
+<<<<<<< HEAD
+		this.platformChargeRate = car.getCarType().getPlatformChargeRate();
+=======
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 		this.state = OrderStatePendingForApprove.getInstance();
 		this.orderID = Order.ordersList.size() + 1;
 		((CustomerAccount) this.renter).withdrawal(this.getRentPrice());
@@ -36,6 +44,10 @@ public class Order {
 		this.car = car;
 		this.date = date;
 		this.days = days;
+<<<<<<< HEAD
+		this.platformChargeRate = car.getCarType().getPlatformChargeRate();
+=======
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 		this.state = OrderStatePendingForApprove.getInstance();
 		this.orderID = Order.ordersList.size() + 1;
 		((CustomerAccount) this.renter).withdrawal(this.getRentPrice());
@@ -131,10 +143,17 @@ public class Order {
 	}
 
 	public double getRentPrice() {
+<<<<<<< HEAD
+		return (coupon == null) ? car.getRentPrice(days) * this.platformChargeRate : car.getRentPrice(days) * coupon.getDiscountPercentage() * this.platformChargeRate ;
+	}
+	public double getLenderReceiveAmount() {
+		return car.getRentPrice(days) * 0.95;
+=======
 		return (coupon == null) ? car.getRentPrice(days) * 1.05 : car.getRentPrice(days) * coupon.getDiscountPercentage() * 1.05 ;
 	}
 	public double getLenderReceiveAmount() {
 		return (coupon == null) ? car.getRentPrice(days) * 0.95 : car.getRentPrice(days) * coupon.getDiscountPercentage() * 0.95 ;
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 	}
 
 	@Override
@@ -247,6 +266,13 @@ public class Order {
 		}
 	}
 
+<<<<<<< HEAD
+	public static void cancelOrder(Order o) {
+		o.setState(OrderStateCancel.getInstance());
+	}
+
+=======
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 	public static boolean isOrderDateVaild(Car c, Date d, int days) {
 		Date startDate = d;
 		Calendar cal = Calendar.getInstance();

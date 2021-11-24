@@ -2,7 +2,7 @@ package Object;
 
 public class CarTypeLightGoodsVehicle implements CarType {
 
-	private double rate;
+	private double rate = 1;
 	private static CarTypeLightGoodsVehicle instance = new CarTypeLightGoodsVehicle();
 
 	public static CarTypeLightGoodsVehicle getInstance() {

@@ -2,7 +2,7 @@ package Object;
 
 public class CarTypeSupercar implements CarType {
 
-	private double rate;
+	private double rate = 1;
 	private static CarTypeSupercar instance = new CarTypeSupercar();
 
 	public static CarTypeSupercar getInstance() {
