@@ -37,11 +37,24 @@ public class Cartopia {
 				"║                                ©  Copyright  Group 11 Cartopia 2021                           ║\n");
 		System.out.print(
 				"╚═══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+<<<<<<< HEAD
+		Account admin = new AdminAccount("admin", "P@ssw0rd", "whchan1024@gmail.com");
+		Account a1 = new CustomerAccount(null, "hong", "a", "whchan1024@gmail.com");
+		Car c1 = new Car(a1, CarTypeSupercar.getInstance(), "McLaren 720S", 1000);
+		Car c2 = new Car(a1, CarTypePrivateCar.getInstance(), "Model S", 500);
+		Account a2 = new CustomerAccount(null, "andrew", "a", "andrew2048@gmail.com");
+		Car c3 = new Car(a2, CarTypeSupercar.getInstance(), "BMW 7 Series", 800);
+		Car c4 = new Car(a2, CarTypePrivateCar.getInstance(), "Model S", 500);
+		Account a3 = new CustomerAccount(null, "nigel", "a", "nigel4096@gmail.com");
+
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+=======
 
 		Account a1 = new CustomerAccount(null, "a", "a", "whchan1024@gmail.com");
 		Car c1 = new Car(a1, CarTypeSupercar.getInstance(), "McLaren 720S", 1000);
 		Car c2 = new Car(a1, CarTypePrivateCar.getInstance(), "Model S", 500);
 
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 		logout: while (true) {
 			System.out.println("l - Login | format: l <username> <password>");
 			System.out.println("x - Exit Cartopia");
@@ -61,6 +74,83 @@ public class Cartopia {
 					Long datetime = System.currentTimeMillis();
 					Timestamp timestamp = new Timestamp(datetime);
 					System.out.println("Welcome, " + username + "! Time now is : " + timestamp + ".");
+<<<<<<< HEAD
+
+					adminMenu: while (Account.getAccountByUsername(username).getClass().toString()
+							.equals("class Object.AdminAccount")) {
+						Account adminAC = Account.getAccountByUsername(username);
+						System.out.println("l - List Coupon");
+						System.out.println("a - Add Coupon");
+						System.out.println("d - Remove Coupon");
+						System.out.println("c - Change Platform Charge Rate");
+						System.out.println("x - Exit And Logout");
+
+						cmd = (char) s.next().charAt(0);
+						switch (cmd) {
+						case 'l':
+							for (Coupon coupon : Coupon.couponList) {
+								System.out.println(coupon);
+							}
+							break;
+						case 'a':
+							System.out.println("Choose coupon to add:");
+							System.out.println("a - Account Coupon | format: a <Coupon Name> <Discount Rate>");
+							System.out
+									.println("c - Code Coupon | format: c <Coupon Name> <Coupon Code> <Discount Rate>");
+							System.out.println("x - go back to admin menu.");
+							String couponName = "";
+							String couponCode = "";
+							Double discountRate = 1.0;
+
+							Date couponExpireDate = null;
+							String couponExpireDateInput = "";
+
+							cmd = (char) s.next().charAt(0);
+							switch (cmd) {
+							case 'a':
+								couponName = s.next();
+								discountRate = s.nextDouble();
+								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+								couponExpireDateInput = s.next();
+								System.out.println("Coupon Successfully Added");
+
+								break;
+							case 'c':
+								couponName = s.next();
+								couponCode = s.next();
+								discountRate = s.nextDouble();
+								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+								couponExpireDateInput = s.next();
+								if (null != couponExpireDateInput && couponExpireDateInput.trim().length() > 0) {
+									try {
+										couponExpireDate = (Date) format.parse(couponExpireDateInput);
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								new CodeCoupon(couponName, discountRate, couponCode, couponExpireDate);
+								System.out.println("Coupon Successfully Added");
+								break;
+							case 'x':
+								continue adminMenu;
+							default:
+								System.out.println("wrong cmd.");
+							}
+							break;
+						case 'r':
+							break;
+						case 'c':
+							break;
+						case 'x':
+							continue logout;
+						default:
+							System.out.println("wrong cmd.");
+						}
+					}
+
+=======
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 					menu: while (true) {
 						System.out.println("Main Menu *\\(^_^)/*\n=================================\n");
 						System.out.println("s - Serach Car");
@@ -107,7 +197,7 @@ public class Cartopia {
 							default:
 								ct = null;
 							}
-							System.out.println(ct.getCarType());
+							// System.out.println(ct.getCarType());l
 
 							System.out.println("Do you know the name of cars? (No = n, Yes = y)");
 							String carName;
@@ -160,6 +250,27 @@ public class Cartopia {
 								System.out.println("please enter car search index of the car you want to rent.");
 								int carSerachIndex = s.nextInt();
 
+<<<<<<< HEAD
+								CustomerAccount lender = (CustomerAccount)result.get(carSerachIndex).getAccount();
+								CustomerAccount renter = (CustomerAccount)Account.getAccountByUsername(username);
+								Date startDate = null;
+								while(true){
+									System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+									String cinput = s.next();
+									if (null != cinput && cinput.trim().length() > 0) {
+										try {
+											Date todayDatePlusTwo = new Date(java.util.Calendar.getInstance().getTime().getTime() + 86400000 * 2); //86400000 = 1 day
+											startDate = (Date) format.parse(cinput);
+											if(startDate.before(todayDatePlusTwo)){
+												System.out.println("You can only book a car three days in advance, try again?");
+												continue;
+											}
+											break;
+										} catch (ParseException e) {
+											System.out.println("data format wrong, please try again.");
+											continue;
+										}
+=======
 								Account lender = result.get(carSerachIndex).getAccount();
 								Account renter = Account.getAccountByUsername(username);
 								Date startDate = null;
@@ -172,6 +283,7 @@ public class Cartopia {
 									} catch (ParseException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 									}
 								}
 
@@ -179,8 +291,19 @@ public class Cartopia {
 								int days = s.nextInt();
 
 								if (Order.isOrderDateVaild(result.get(carSerachIndex), startDate, days)) {
+<<<<<<< HEAD
+									Order o = new Order(renter, lender, days, startDate, result.get(carSerachIndex));
+									if(o.getRentPrice() > renter.getCoin()){
+										System.out.println("Not enough coin to create order, order cancelled.");
+										Order.cancelOrder(o);
+									}else{
+										System.out.println("Pending the lender to accept the order.");
+									}
+									
+=======
 									new Order(renter, lender, days, startDate, result.get(carSerachIndex));
 									System.out.println("Pending the lender to accept the order.");
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								} else {
 									System.out.println(
 											"This car was reserved for another customer during this order date, try again with other order date.");
@@ -201,7 +324,12 @@ public class Cartopia {
 							if (ro.size() > 0) {
 								System.out.println("Rent Order");
 								for (Order itr : ro) {
+<<<<<<< HEAD
+									if (itr.getState().equals(OrderStateOrderConfirmed.getInstance())
+											|| itr.getState().equals(OrderStatePendingForApprove.getInstance()))
+=======
 									if (itr.getState().equals(OrderStateOrderConfirmed.getInstance()))
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										System.out.println(itr.toString());
 								}
 							}
@@ -221,7 +349,11 @@ public class Cartopia {
 										System.out.println(itr.toString());
 								}
 							}
+<<<<<<< HEAD
+							if (ro.size() > 0 && lo.size() > 0 && co.size() > 0) {
+=======
 							if (ro.size() > 0 && lo.size() > 0) {
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("No Order Found");
 								System.out.println("Return To Main Meun");
 								System.out.println("");
@@ -239,6 +371,32 @@ public class Cartopia {
 									cmd = s.next().charAt(0);
 									int orderID = 0;
 									Order orderToAction = null;
+<<<<<<< HEAD
+									if (cmd != 'l' && cmd != 'x') {
+										orderID = s.nextInt();
+										orderToAction = Order.findOrderByOrderID(orderID);
+										if (orderToAction == null) {
+											System.out.println("Order not Found");
+											continue order;
+										}
+									}
+									switch (cmd) {
+									case 'l':
+										if (ro.size() > 0) {
+											System.out.println("Rent Order");
+											for (Order itr : ro) {
+												if (itr.getState().equals(OrderStateOrderConfirmed.getInstance()) || itr
+														.getState().equals(OrderStatePendingForApprove.getInstance()))
+													System.out.println(itr.toString());
+											}
+										}
+
+										if (lo.size() > 0) {
+											System.out.println("Lend Order");
+											for (Order itr : lo) {
+												if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
+													System.out.println(itr.toString());
+=======
 									orderID = s.nextInt();
 									orderToAction = Order.findOrderByOrderID(orderID);
 									if (orderToAction == null) {
@@ -261,16 +419,26 @@ public class Cartopia {
 											System.out.println("Lend Order");
 											for (Order itr : lo) {
 												System.out.println(itr.toString());
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 											}
 										}
 
 										if (co.size() > 0) {
+<<<<<<< HEAD
+											System.out.println("Cenceled Order");
+											for (Order itr : co) {
+												if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
+													System.out.println(itr.toString());
+											}
+										}
+=======
 											System.out.println("Canceled Order");
 											for (Order itr : co) {
 												System.out.println(itr.toString());
 											}
 										}
 
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										System.out.println("");
 										break;
 									case 'o':
@@ -294,7 +462,12 @@ public class Cartopia {
 											}
 
 											System.out.println("Please give a comment for this order");
+<<<<<<< HEAD
+											s.nextLine();
+											String comment = s.nextLine();
+=======
 											String comment = s.next();
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 
 											Rating rate = new Rating(score, comment);
 											Order.finishOrder(orderToAction, Account.getAccountByUsername(username),
@@ -329,8 +502,13 @@ public class Cartopia {
 								System.out.println("Car index - " + i);
 								System.out.println(c.get(i).toString());
 							}
+<<<<<<< HEAD
+
+							if (c.isEmpty()) {
+=======
 							
 							if(c.isEmpty()){
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("404 not found - Why not try to lent a car?\n\n");
 							}
 
@@ -347,7 +525,11 @@ public class Cartopia {
 								System.out.println("2 - Motorcycle");
 								System.out.println("3 - Supercar");
 								CarType buildCarType;
+<<<<<<< HEAD
+								while (true) {
+=======
 								while(true){
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 									temp = s.nextInt();
 									switch (temp) {
 									case 0:
@@ -357,7 +539,11 @@ public class Cartopia {
 										buildCarType = CarTypeLightGoodsVehicle.getInstance();
 										break;
 									case 2:
+<<<<<<< HEAD
+										buildCarType = CarTypeMotorCycle.getInstance();
+=======
 										buildCarType = CarTypeMotorCycle.getInstance();	
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										break;
 									case 3:
 										buildCarType = CarTypeSupercar.getInstance();
@@ -391,9 +577,15 @@ public class Cartopia {
 						case 'a':
 							Account ac = Account.getAccountByUsername(username);
 							System.out.println(ac);
+<<<<<<< HEAD
+							account: while (true) {
+								System.out.println("Account Menu\n=================================\n");
+								System.out.println("v - view Account balance");
+=======
 							account: while(true){
 								System.out.println("Account Menu\n=================================\n");
 								System.out.println("v - view Account Remaining");
+>>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("d - deposit | d <amount>");
 								System.out.println("w - withdrawal | d <amount>");
 								System.out.println("x - go back to main menu.");
