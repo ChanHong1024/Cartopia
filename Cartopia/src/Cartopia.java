@@ -37,7 +37,6 @@ public class Cartopia {
 				"║                                ©  Copyright  Group 11 Cartopia 2021                           ║\n");
 		System.out.print(
 				"╚═══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-<<<<<<< HEAD
 		Account admin = new AdminAccount("admin", "P@ssw0rd", "whchan1024@gmail.com");
 		Account a1 = new CustomerAccount(null, "hong", "a", "whchan1024@gmail.com");
 		Car c1 = new Car(a1, CarTypeSupercar.getInstance(), "McLaren 720S", 1000);
@@ -48,13 +47,6 @@ public class Cartopia {
 		Account a3 = new CustomerAccount(null, "nigel", "a", "nigel4096@gmail.com");
 
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-=======
-
-		Account a1 = new CustomerAccount(null, "a", "a", "whchan1024@gmail.com");
-		Car c1 = new Car(a1, CarTypeSupercar.getInstance(), "McLaren 720S", 1000);
-		Car c2 = new Car(a1, CarTypePrivateCar.getInstance(), "Model S", 500);
-
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 		logout: while (true) {
 			System.out.println("l - Login | format: l <username> <password>");
 			System.out.println("x - Exit Cartopia");
@@ -74,7 +66,6 @@ public class Cartopia {
 					Long datetime = System.currentTimeMillis();
 					Timestamp timestamp = new Timestamp(datetime);
 					System.out.println("Welcome, " + username + "! Time now is : " + timestamp + ".");
-<<<<<<< HEAD
 
 					adminMenu: while (Account.getAccountByUsername(username).getClass().toString()
 							.equals("class Object.AdminAccount")) {
@@ -149,8 +140,6 @@ public class Cartopia {
 						}
 					}
 
-=======
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 					menu: while (true) {
 						System.out.println("Main Menu *\\(^_^)/*\n=================================\n");
 						System.out.println("s - Serach Car");
@@ -250,7 +239,6 @@ public class Cartopia {
 								System.out.println("please enter car search index of the car you want to rent.");
 								int carSerachIndex = s.nextInt();
 
-<<<<<<< HEAD
 								CustomerAccount lender = (CustomerAccount)result.get(carSerachIndex).getAccount();
 								CustomerAccount renter = (CustomerAccount)Account.getAccountByUsername(username);
 								Date startDate = null;
@@ -270,20 +258,6 @@ public class Cartopia {
 											System.out.println("data format wrong, please try again.");
 											continue;
 										}
-=======
-								Account lender = result.get(carSerachIndex).getAccount();
-								Account renter = Account.getAccountByUsername(username);
-								Date startDate = null;
-								SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
-								String cinput = s.next();
-								if (null != cinput && cinput.trim().length() > 0) {
-									try {
-										startDate = (Date) format.parse(cinput);
-									} catch (ParseException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 									}
 								}
 
@@ -291,7 +265,6 @@ public class Cartopia {
 								int days = s.nextInt();
 
 								if (Order.isOrderDateVaild(result.get(carSerachIndex), startDate, days)) {
-<<<<<<< HEAD
 									Order o = new Order(renter, lender, days, startDate, result.get(carSerachIndex));
 									if(o.getRentPrice() > renter.getCoin()){
 										System.out.println("Not enough coin to create order, order cancelled.");
@@ -300,10 +273,6 @@ public class Cartopia {
 										System.out.println("Pending the lender to accept the order.");
 									}
 									
-=======
-									new Order(renter, lender, days, startDate, result.get(carSerachIndex));
-									System.out.println("Pending the lender to accept the order.");
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								} else {
 									System.out.println(
 											"This car was reserved for another customer during this order date, try again with other order date.");
@@ -324,12 +293,8 @@ public class Cartopia {
 							if (ro.size() > 0) {
 								System.out.println("Rent Order");
 								for (Order itr : ro) {
-<<<<<<< HEAD
 									if (itr.getState().equals(OrderStateOrderConfirmed.getInstance())
 											|| itr.getState().equals(OrderStatePendingForApprove.getInstance()))
-=======
-									if (itr.getState().equals(OrderStateOrderConfirmed.getInstance()))
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										System.out.println(itr.toString());
 								}
 							}
@@ -349,11 +314,7 @@ public class Cartopia {
 										System.out.println(itr.toString());
 								}
 							}
-<<<<<<< HEAD
 							if (ro.size() > 0 && lo.size() > 0 && co.size() > 0) {
-=======
-							if (ro.size() > 0 && lo.size() > 0) {
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("No Order Found");
 								System.out.println("Return To Main Meun");
 								System.out.println("");
@@ -371,7 +332,6 @@ public class Cartopia {
 									cmd = s.next().charAt(0);
 									int orderID = 0;
 									Order orderToAction = null;
-<<<<<<< HEAD
 									if (cmd != 'l' && cmd != 'x') {
 										orderID = s.nextInt();
 										orderToAction = Order.findOrderByOrderID(orderID);
@@ -396,49 +356,16 @@ public class Cartopia {
 											for (Order itr : lo) {
 												if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
 													System.out.println(itr.toString());
-=======
-									orderID = s.nextInt();
-									orderToAction = Order.findOrderByOrderID(orderID);
-									if (orderToAction == null) {
-										System.out.println("Order not Found");
-										continue order;
-									}
-
-									switch (cmd) {
-									case 'l':
-										if (ro.size() > 0 && lo.size() > 0) {
-											System.out.println("No Order Found");
-										}
-										if (ro.size() > 0) {
-											System.out.println("Rent Order");
-											for (Order itr : ro) {
-												System.out.println(itr.toString());
-											}
-										}
-										if (lo.size() > 0) {
-											System.out.println("Lend Order");
-											for (Order itr : lo) {
-												System.out.println(itr.toString());
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 											}
 										}
 
 										if (co.size() > 0) {
-<<<<<<< HEAD
 											System.out.println("Cenceled Order");
 											for (Order itr : co) {
 												if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
 													System.out.println(itr.toString());
 											}
 										}
-=======
-											System.out.println("Canceled Order");
-											for (Order itr : co) {
-												System.out.println(itr.toString());
-											}
-										}
-
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										System.out.println("");
 										break;
 									case 'o':
@@ -462,12 +389,8 @@ public class Cartopia {
 											}
 
 											System.out.println("Please give a comment for this order");
-<<<<<<< HEAD
 											s.nextLine();
 											String comment = s.nextLine();
-=======
-											String comment = s.next();
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 
 											Rating rate = new Rating(score, comment);
 											Order.finishOrder(orderToAction, Account.getAccountByUsername(username),
@@ -502,13 +425,8 @@ public class Cartopia {
 								System.out.println("Car index - " + i);
 								System.out.println(c.get(i).toString());
 							}
-<<<<<<< HEAD
 
 							if (c.isEmpty()) {
-=======
-							
-							if(c.isEmpty()){
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("404 not found - Why not try to lent a car?\n\n");
 							}
 
@@ -525,11 +443,7 @@ public class Cartopia {
 								System.out.println("2 - Motorcycle");
 								System.out.println("3 - Supercar");
 								CarType buildCarType;
-<<<<<<< HEAD
 								while (true) {
-=======
-								while(true){
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 									temp = s.nextInt();
 									switch (temp) {
 									case 0:
@@ -539,11 +453,7 @@ public class Cartopia {
 										buildCarType = CarTypeLightGoodsVehicle.getInstance();
 										break;
 									case 2:
-<<<<<<< HEAD
 										buildCarType = CarTypeMotorCycle.getInstance();
-=======
-										buildCarType = CarTypeMotorCycle.getInstance();	
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 										break;
 									case 3:
 										buildCarType = CarTypeSupercar.getInstance();
@@ -577,15 +487,9 @@ public class Cartopia {
 						case 'a':
 							Account ac = Account.getAccountByUsername(username);
 							System.out.println(ac);
-<<<<<<< HEAD
 							account: while (true) {
 								System.out.println("Account Menu\n=================================\n");
 								System.out.println("v - view Account balance");
-=======
-							account: while(true){
-								System.out.println("Account Menu\n=================================\n");
-								System.out.println("v - view Account Remaining");
->>>>>>> 8fccc0dc326f9d8dec9432d61a92fc85b51e8e77
 								System.out.println("d - deposit | d <amount>");
 								System.out.println("w - withdrawal | d <amount>");
 								System.out.println("x - go back to main menu.");
