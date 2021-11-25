@@ -10,12 +10,8 @@ public class AdminAccount extends Account {
 		Coupon.couponList.add(coupon);
 	}
 
-	public void removeCoupon(Coupon coupon) {
-		for(Coupon itr : Coupon.couponList){
-			if(coupon == itr){
-				Coupon.couponList.remove(itr);
-			}
-		}
+	public static void removeCoupon(Coupon coupon) {
+		Coupon.couponList.remove(coupon);
 	}
 
 	public void setPlatformChargeRate(CarType carType, int rate) {

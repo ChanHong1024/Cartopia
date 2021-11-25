@@ -72,15 +72,19 @@ public class Cartopia {
 						Account adminAC = Account.getAccountByUsername(username);
 						System.out.println("l - List Coupon");
 						System.out.println("a - Add Coupon");
-						System.out.println("d - Remove Coupon");
+						System.out.println("r - Remove Coupon");
 						System.out.println("c - Change Platform Charge Rate");
 						System.out.println("x - Exit And Logout");
 
 						cmd = (char) s.next().charAt(0);
 						switch (cmd) {
 						case 'l':
-							for (Coupon coupon : Coupon.couponList) {
-								System.out.println(coupon);
+							if (Coupon.couponList != null && !Coupon.couponList.isEmpty()) {
+								for (Coupon coupon : Coupon.couponList) {
+									System.out.println(coupon);
+								}
+							} else {
+								System.out.println("No Coupon Found");
 							}
 							break;
 						case 'a':
@@ -101,16 +105,27 @@ public class Cartopia {
 							case 'a':
 								couponName = s.next();
 								discountRate = s.nextDouble();
-								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+								System.out.println("please enter the exprie date. (dd/MM/yyyy)");
 								couponExpireDateInput = s.next();
+								if (null != couponExpireDateInput && couponExpireDateInput.trim().length() > 0) {
+									try {
+										couponExpireDate = (Date) format.parse(couponExpireDateInput);
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								AccountCoupon accountCoupon = new AccountCoupon(couponName, discountRate,
+										couponExpireDate);
+								accountCoupon.addCouponOwners(Account.accountList);
 								System.out.println("Coupon Successfully Added");
-
+								System.out.println("The Coupon Successfully Added");
 								break;
 							case 'c':
 								couponName = s.next();
 								couponCode = s.next();
 								discountRate = s.nextDouble();
-								System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
+								System.out.println("please enter the exprie date. (dd/MM/yyyy)");
 								couponExpireDateInput = s.next();
 								if (null != couponExpireDateInput && couponExpireDateInput.trim().length() > 0) {
 									try {
@@ -130,8 +145,52 @@ public class Cartopia {
 							}
 							break;
 						case 'r':
+							for (Coupon c : Coupon.couponList) {
+								System.out.println(c);
+							}
+							System.out.println("Please Enter Coupon Name To Remove");
+							s.nextLine();
+							couponName = s.nextLine();
+							Coupon couponSearchResult = Coupon.searchCouponByName(couponName);
+							if (couponSearchResult == null) {
+								System.out.println("Wrong Input Name");
+							} else {
+								AdminAccount.removeCoupon(couponSearchResult);
+								System.out.println("Coupon Remove");
+							}
 							break;
 						case 'c':
+							System.out.println("What is your car type?");
+							System.out.println("0 - Private Car");
+							System.out.println("1 - Light Goods Vechicle");
+							System.out.println("2 - Motorcycle");
+							System.out.println("3 - Supercar");
+							int ctn = s.nextInt();
+							CarType _ct = null;
+
+							switch (ctn) {
+							case 0:
+								_ct = CarTypePrivateCar.getInstance();
+								break;
+							case 1:
+								_ct = CarTypeLightGoodsVehicle.getInstance();
+								break;
+							case 2:
+								_ct = CarTypeMotorCycle.getInstance();
+								break;
+							case 3:
+								_ct = CarTypeSupercar.getInstance();
+								break;
+							default:
+								System.out.println("Please Select A valid Car Type");
+								continue;
+							}
+
+							System.out.println("What is the changing rate? (default is 1)");
+							Double chargeRate = s.nextDouble();
+							_ct.setPlatformChargeRate(chargeRate);
+							System.out.println(
+									_ct.getCarType() + "has changed the charge rate to " + _ct.getPlatformChargeRate());
 							break;
 						case 'x':
 							continue logout;
@@ -239,18 +298,21 @@ public class Cartopia {
 								System.out.println("please enter car search index of the car you want to rent.");
 								int carSerachIndex = s.nextInt();
 
-								CustomerAccount lender = (CustomerAccount)result.get(carSerachIndex).getAccount();
-								CustomerAccount renter = (CustomerAccount)Account.getAccountByUsername(username);
+								CustomerAccount lender = (CustomerAccount) result.get(carSerachIndex).getAccount();
+								CustomerAccount renter = (CustomerAccount) Account.getAccountByUsername(username);
 								Date startDate = null;
-								while(true){
+								while (true) {
 									System.out.println("please enter start date you want to rent. (dd/MM/yyyy)");
 									String cinput = s.next();
 									if (null != cinput && cinput.trim().length() > 0) {
 										try {
-											Date todayDatePlusTwo = new Date(java.util.Calendar.getInstance().getTime().getTime() + 86400000 * 2); //86400000 = 1 day
+											Date todayDatePlusTwo = new Date(
+													java.util.Calendar.getInstance().getTime().getTime()
+															+ 86400000 * 2); // 86400000 = 1 day
 											startDate = (Date) format.parse(cinput);
-											if(startDate.before(todayDatePlusTwo)){
-												System.out.println("You can only book a car three days in advance, try again?");
+											if (startDate.before(todayDatePlusTwo)) {
+												System.out.println(
+														"You can only book a car three days in advance, try again?");
 												continue;
 											}
 											break;
@@ -266,13 +328,13 @@ public class Cartopia {
 
 								if (Order.isOrderDateVaild(result.get(carSerachIndex), startDate, days)) {
 									Order o = new Order(renter, lender, days, startDate, result.get(carSerachIndex));
-									if(o.getRentPrice() > renter.getCoin()){
+									if (o.getRentPrice() > renter.getCoin()) {
 										System.out.println("Not enough coin to create order, order cancelled.");
 										Order.cancelOrder(o);
-									}else{
+									} else {
 										System.out.println("Pending the lender to accept the order.");
 									}
-									
+
 								} else {
 									System.out.println(
 											"This car was reserved for another customer during this order date, try again with other order date.");

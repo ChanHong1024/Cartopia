@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class AccountCoupon extends Coupon {
 
-	private static Vector<Account> owners;
+	private static Vector<Account> owners = new Vector<Account>();
 
 	public void addCouponOwner(Account account) {
 		owners.add(account);
@@ -20,14 +20,14 @@ public class AccountCoupon extends Coupon {
 	public AccountCoupon(String name, double discountRate, Date expireDate) {
 		super(name, discountRate, expireDate);
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		String onwerNameList = "";
 		for (Account ac : owners) {
-			onwerNameList += ac.getUsername();
+			onwerNameList += ac.getUsername() + " ";
 		}
-			
+
 		return super.toString() + "\n Type : Account Coupon" + "\n Owner : " + onwerNameList;
 	}
 

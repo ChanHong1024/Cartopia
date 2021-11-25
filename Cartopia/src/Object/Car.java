@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class Car {
 
-	public static Vector<Car> carList  = new Vector<>();
+	public static Vector<Car> carList = new Vector<>();
 	private String carName;
 	private double pricePerDay;
 	private CarType carType;
