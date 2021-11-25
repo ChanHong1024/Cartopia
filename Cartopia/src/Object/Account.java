@@ -2,7 +2,7 @@ package Object;
 import java.util.Vector;
 
 public class Account {
-	public static Vector<Account> accountList  = new Vector<>();
+	public static Vector<Account> accountList = new Vector<>();
 	public static Account loginAccount;
 	private String username;
 	private String password;
