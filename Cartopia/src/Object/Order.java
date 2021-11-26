@@ -18,7 +18,7 @@ public class Order {
 	private int days;
 	private int orderID;
 
-	public Order(Account renter, Account lender, Car car, int days, Date date, Coupon coupon) {
+	public Order(Account renter, Account lender, int days, Date date, Car car, Coupon coupon) {
 		this.renter = renter;
 		this.lender = lender;
 		this.car = car;

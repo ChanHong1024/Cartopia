@@ -31,4 +31,20 @@ public class AccountCoupon extends Coupon {
 		return super.toString() + "\n Type : Account Coupon" + "\n Owner : " + onwerNameList;
 	}
 
+	public boolean isAccountOwnThis(Account a){
+		return (owners.contains(a)) ? true : false;
+	}
+
+	public static Vector<AccountCoupon> getAccountCoupons(Account a){
+		Vector<AccountCoupon> result = new Vector<>();
+		for(Coupon itr : Coupon.couponList){
+			if(itr.getClass() == AccountCoupon.class){
+				if(((AccountCoupon)itr).isAccountOwnThis(a)){
+					result.add((AccountCoupon)itr);
+				}
+			}
+		}
+		return result;
+	}
+
 }

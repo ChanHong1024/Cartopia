@@ -19,4 +19,17 @@ public class CodeCoupon extends Coupon {
 	public String toString(){
 		return super.toString() + "\n Type : Code Coupon" + "\n Code : " + code;
 	}
+
+
+	public static CodeCoupon getCodeCoupons(String code){
+		for(Coupon itr : Coupon.couponList){
+			if(itr.getClass() == CodeCoupon.class){
+				if(((CodeCoupon)itr).getCode().equals(code)){
+					return (CodeCoupon)itr;
+				}
+			}
+		}
+		return null;
+	}
+	
 }

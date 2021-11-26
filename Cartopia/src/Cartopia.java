@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -57,6 +58,7 @@ public class Cartopia {
 		CodeCoupon coupon3 = new CodeCoupon("Newer Welcome gift 3.", 0.75, "WELCOME" , expireDate);
 
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	
 		logout: while (true) {
 			System.out.println("l - Login | format: l <username> <password>");
 			System.out.println("x - Exit Cartopia");
@@ -79,6 +81,8 @@ public class Cartopia {
 
 					adminMenu: while (Account.getAccountByUsername(username).getClass().toString()
 							.equals("class Object.AdminAccount")) {
+						try {
+
 						Account adminAC = Account.getAccountByUsername(username);
 						System.out.println("l - List Coupon");
 						System.out.println("a - Add Coupon");
@@ -207,9 +211,14 @@ public class Cartopia {
 						default:
 							System.out.println("wrong cmd.");
 						}
+						} catch (InputMismatchException i) {
+							System.out.println("wrong cmd.");
+							continue adminMenu;
+						}
 					}
 
 					menu: while (true) {
+						try{
 						System.out.println("\n\nMain Menu *\\(^_^)/*\n=================================");
 						System.out.println("s - Serach Car & Make order");
 						System.out.println("o - Order Management");
@@ -335,9 +344,66 @@ public class Cartopia {
 
 								System.out.println("please enter days you want to rent.");
 								int days = s.nextInt();
+								System.out.println("Would you like to use coupon in this order?(No = n, Yes = y)");
+								
+								cmd = s.next().charAt(0);
+
+								Coupon cp = null;
+
+								if(cmd == 'y'){
+
+
+									coupon: while(true){
+										System.out.println("What type of coupon you want to use?");
+										System.out.println("0 - Account Coupon");
+										System.out.println("1 - Code Coupon");
+										System.out.println("x - Go Back");
+										cmd = s.next().charAt(0);
+										switch(cmd){
+											case '0': 
+												Vector<AccountCoupon> ac = AccountCoupon.getAccountCoupons(Account.getAccountByUsername(username));
+												System.out.println("Your coupon");
+												System.out.println("=================================");
+												for(int i = 0;i < ac.size();i++){
+													System.out.println("Coupon index: " + i + " - "+ ac.get(i).getName() + ", Discount: " +  ac.get(i).getDiscountPercentage() + "Expire date:" + ac.get(i).getExpireDate().toString());
+												}
+												System.out.println("Please input the coupon index you want to use:");
+												temp = s.nextInt();
+												System.out.println(temp + " _ " + ac.size());
+												if(temp >= ac.size() || temp < 0 ){
+													System.out.println("Please input the correct coupon index!!");
+												}else{
+													System.out.println("Coupon has been added to order!");
+													cp = ac.get(temp);
+													break coupon;
+												}									
+												break;
+											case '1': 
+												System.out.println("Please input the coupon index you want to use:");
+												s.nextLine();
+												String code = s.nextLine();
+												CodeCoupon cc = CodeCoupon.getCodeCoupons(code);
+												if(cc == null){
+													System.out.println("This code is invalid.");
+												}else{
+													System.out.println("Coupon has been added to order!");
+													cp = cc;
+													break coupon;
+												}
+												break;
+											case 'x':
+												break coupon;
+										}
+									}
+								}
 
 								if (Order.isOrderDateVaild(result.get(carSerachIndex), startDate, days)) {
-									Order o = new Order(renter, lender, days, startDate, result.get(carSerachIndex));
+									Order o;
+									if(cp != null){
+										o = new Order(renter, lender, days, startDate, result.get(carSerachIndex));
+									}else{
+										o = new Order(renter, lender, days, startDate, result.get(carSerachIndex), cp);
+									}
 									if (o.getRentPrice() > renter.getCoin()) {
 										System.out.println("Not enough coin to create order, order cancelled.");
 										Order.cancelOrder(o);
@@ -602,6 +668,10 @@ public class Cartopia {
 						default:
 							System.out.println("wrong cmd.");
 						}
+						} catch (InputMismatchException i) {
+							System.out.println("wrong cmd.");
+							continue menu;
+						}
 					}
 				} else {
 					System.out.println("Wrong username or password! please try again.");
@@ -614,6 +684,9 @@ public class Cartopia {
 			}
 		}
 
-	}
+	}	
+	
+
+
 
 }
