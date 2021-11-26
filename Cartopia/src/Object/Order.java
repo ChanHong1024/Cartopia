@@ -206,7 +206,7 @@ public class Order {
 		if (o.getRenter() == renter) {
 			((CustomerAccount) renter).deposit(o.getRentPrice());
 			o.getCar().setCarState(CarStateAvailable.getInstance());
-			o.setState(OrderStateOrderConfirmed.getInstance());
+			o.setState(OrderStateCancel.getInstance());
 			return 0;
 		} else {
 			// wrong renter value
@@ -218,7 +218,7 @@ public class Order {
 		if (o.getLender() == lender) {
 			((CustomerAccount) o.getRenter()).deposit(o.getRentPrice());
 			o.getCar().setCarState(CarStateAvailable.getInstance());
-			o.setState(OrderStateOrderConfirmed.getInstance());
+			o.setState(OrderStateCancel.getInstance());
 			return 0;
 		} else {
 			// wrong renter value
@@ -226,8 +226,8 @@ public class Order {
 		}
 	}
 
-	public static int comfirmOrder(Order o, Account renter) {
-		if (o.getRenter() == renter) {
+	public static int comfirmOrder(Order o, Account lender) {
+		if (o.getLender() == lender) {
 			o.getCar().setCarState(CarStateUnavailable.getInstance());
 			o.setState(OrderStateOrderConfirmed.getInstance());
 			return 0;
@@ -237,9 +237,9 @@ public class Order {
 		}
 	}
 
-	public static int finishOrder(Order o, Account lender, Rating rating) {
-		if (o.getLender() == lender) {
-			((CustomerAccount) lender).deposit(o.getLenderReceiveAmount());
+	public static int finishOrder(Order o, Account renter, Rating rating) {
+		if (o.getRenter() == renter) {
+			((CustomerAccount) o.getLender()).deposit(o.getLenderReceiveAmount());
 			o.getCar().setCarState(CarStateAvailable.getInstance());
 			o.setState(OrderStateOrderComplete.getInstance());
 			o.setRating(rating);
@@ -251,6 +251,7 @@ public class Order {
 	}
 
 	public static void cancelOrder(Order o) {
+		((CustomerAccount)o.getRenter()).deposit(o.getRentPrice());
 		o.setState(OrderStateCancel.getInstance());
 	}
 

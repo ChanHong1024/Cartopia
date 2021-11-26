@@ -63,8 +63,8 @@ public class Account {
 	@Override
 	public String toString() {
 		return "Account Information: \n" +
-			" username: " + getUsername() + "\n" +
-			", email: " + getEmail() + "\n";
+			"username: " + getUsername() + "\n" +
+			"email: " + getEmail() + "\n";
 	}
 
 

@@ -8,7 +8,7 @@ import java.util.Vector;
 import Object.*;
 
 public class Cartopia {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParseException {
 		Scanner s = new Scanner(System.in);
 		String username;
 		String password;
@@ -37,14 +37,24 @@ public class Cartopia {
 				"║                                ©  Copyright  Group 11 Cartopia 2021                           ║\n");
 		System.out.print(
 				"╚═══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-		Account admin = new AdminAccount("admin", "P@ssw0rd", "whchan1024@gmail.com");
+		Account admin = new AdminAccount("admin", "a", "whchan1024@gmail.com");
 		Account a1 = new CustomerAccount(null, "hong", "a", "whchan1024@gmail.com");
 		Car c1 = new Car(a1, CarTypeSupercar.getInstance(), "McLaren 720S", 1000);
-		Car c2 = new Car(a1, CarTypePrivateCar.getInstance(), "Model S", 500);
+		Car c2 = new Car(a1, CarTypePrivateCar.getInstance(), "Model X", 1500);
 		Account a2 = new CustomerAccount(null, "andrew", "a", "andrew2048@gmail.com");
 		Car c3 = new Car(a2, CarTypeSupercar.getInstance(), "BMW 7 Series", 800);
 		Car c4 = new Car(a2, CarTypePrivateCar.getInstance(), "Model S", 500);
 		Account a3 = new CustomerAccount(null, "nigel", "a", "nigel4096@gmail.com");
+
+		String date_string = "25-11-2022";
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
+		Date expireDate = formatter.parse(date_string); 
+		
+		AccountCoupon coupon1 = new AccountCoupon("Newer Welcome gift.", 0.75, expireDate);
+		coupon1.addCouponOwner(a1);
+		AccountCoupon coupon2 = new AccountCoupon("Newer Welcome gift 2.", 0.75, expireDate);
+		coupon1.addCouponOwner(a1);
+		CodeCoupon coupon3 = new CodeCoupon("Newer Welcome gift 3.", 0.75, "WELCOME" , expireDate);
 
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		logout: while (true) {
@@ -65,7 +75,7 @@ public class Cartopia {
 				if (Account.login(username, password)) {
 					Long datetime = System.currentTimeMillis();
 					Timestamp timestamp = new Timestamp(datetime);
-					System.out.println("Welcome, " + username + "! Time now is : " + timestamp + ".");
+					System.out.println("\nWelcome, " + username + "! Time now is : " + timestamp + ".");
 
 					adminMenu: while (Account.getAccountByUsername(username).getClass().toString()
 							.equals("class Object.AdminAccount")) {
@@ -200,14 +210,14 @@ public class Cartopia {
 					}
 
 					menu: while (true) {
-						System.out.println("Main Menu *\\(^_^)/*\n=================================\n");
-						System.out.println("s - Serach Car");
+						System.out.println("\n\nMain Menu *\\(^_^)/*\n=================================");
+						System.out.println("s - Serach Car & Make order");
 						System.out.println("o - Order Management");
 						System.out.println("c - Car Management");
 						System.out.println("a - Account Management");
 						System.out.println("l - Logout");
 						System.out.println("x - Exit Cartopia");
-						System.out.println("Please enter you cmd:");
+						System.out.println("\nPlease enter you cmd:");
 
 						cmd = (char) s.next().charAt(0);
 						// System.out.println("Your cmd is " + cmd);
@@ -364,7 +374,8 @@ public class Cartopia {
 							if (lo.size() > 0) {
 								System.out.println("Lend Order");
 								for (Order itr : lo) {
-									if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
+									if (itr.getState().equals(OrderStatePendingForApprove.getInstance())|| itr
+												.getState().equals(OrderStateOrderConfirmed.getInstance()))
 										System.out.println(itr.toString());
 								}
 							}
@@ -387,9 +398,9 @@ public class Cartopia {
 										System.out.println("o - Comfirm Order | format: o <Order ID>");
 									}
 									if (ro.size() > 0) {
-										System.out.println("f - Finish Order | format: o <Order ID>");
+										System.out.println("f - Finish Order | format: f <Order ID>");
 									}
-									System.out.println("c - Cancel Order | format: o <Order ID>");
+									System.out.println("c - Cancel Order | format: c <Order ID>");
 									System.out.println("x - go back to main menu.");
 									cmd = s.next().charAt(0);
 									int orderID = 0;
@@ -416,7 +427,8 @@ public class Cartopia {
 										if (lo.size() > 0) {
 											System.out.println("Lend Order");
 											for (Order itr : lo) {
-												if (itr.getState().equals(OrderStatePendingForApprove.getInstance()))
+												if (itr.getState().equals(OrderStatePendingForApprove.getInstance())|| itr
+												.getState().equals(OrderStateOrderConfirmed.getInstance()))
 													System.out.println(itr.toString());
 											}
 										}
@@ -433,8 +445,7 @@ public class Cartopia {
 									case 'o':
 										if (orderToAction.isOrderConfirmable(username)) {
 											Order.comfirmOrder(orderToAction, Account.getAccountByUsername(username));
-											System.out
-													.println("Order " + orderToAction.getOrderID() + " is Confirmed.");
+											System.out.println("Order " + orderToAction.getOrderID() + " is Confirmed.");
 										} else {
 											System.out.println("Order cannot be Confirm");
 										}
