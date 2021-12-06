@@ -18,7 +18,7 @@ public class License {
 	public boolean isValidLicense(Car car) {
 		Date today = new Date();
 		for (CarType itr: this.carTypeList){
-			if (car.getCarType().equals(itr.getCarType()) && expireDate.after(today))
+			if (car.getCarType() == itr.getCarType() && expireDate.after(today))
 				return true;
 		}
 		return false;
